@@ -63,7 +63,7 @@ private void FixedUpdate()
 {
     // Automatisches Gas geben (Z-Richtung)
     // Wert für 'vorwärts'
-    float autoForwardSpeed = 0.3f; 
+    float autoForwardSpeed = 1.0f; 
 
     // Bewegung berechnen
     // movementX kommt Steuerung 
