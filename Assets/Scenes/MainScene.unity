@@ -820,6 +820,53 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b29faf6740cb849438e53d55497b58ee, type: 3}
+--- !u!1 &400520064
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 400520066}
+  - component: {fileID: 400520065}
+  m_Layer: 0
+  m_Name: Gravity Input
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &400520065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 400520064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46c2b5aaaf97549c5a3ebc76a7dd8701, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: OscCore.Runtime::GravityInput
+  receiver: {fileID: 1258309161}
+  address: /zigsim/gravity
+  gravity: {x: 0, y: 0, z: 0}
+--- !u!4 &400520066
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 400520064}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.68198, y: -1.15365, z: 1.99819}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &408515446 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7192624835206623177, guid: f718a10845157ee4da4f4604313f78e8, type: 3}
@@ -3181,6 +3228,67 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7687229793091385017, guid: 1f1c1ce011e8da44ca58ac244b512c7c, type: 3}
   m_PrefabInstance: {fileID: 1209239273}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1258309159
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1258309162}
+  - component: {fileID: 1258309161}
+  - component: {fileID: 1258309160}
+  m_Layer: 0
+  m_Name: OSC Receiver
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1258309160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1258309159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46c2b5aaaf97549c5a3ebc76a7dd8701, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: OscCore.Runtime::GravityInput
+  receiver: {fileID: 1258309161}
+  address: /zigsim/gravity
+  gravity: {x: 0, y: 0, z: 0}
+--- !u!114 &1258309161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1258309159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6291d1cd9c2bea94482c4d7a30f5ae2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: OscCore.Runtime::OscCore.OscReceiver
+  m_Port: 9000
+--- !u!4 &1258309162
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1258309159}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -46.14615, y: -1.15365, z: 1.99819}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1259959747 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2588023547440350605, guid: f718a10845157ee4da4f4604313f78e8, type: 3}
@@ -4424,6 +4532,7 @@ GameObject:
   - component: {fileID: 2081880993}
   - component: {fileID: 2081880992}
   - component: {fileID: 2081880997}
+  - component: {fileID: 2081880998}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -4618,9 +4727,9 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!23 &2081880996
@@ -4692,6 +4801,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: -90, y: 0, z: 0}
+--- !u!114 &2081880998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2081880990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26275354bcc3e4419a84384e0bd7f032, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: OscCore.Runtime::GravitySteering
+  gravityInput: {fileID: 1258309160}
+  turnStrength: 5
+  smoothing: 5
 --- !u!1001 &2090030270
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4918,3 +5042,5 @@ SceneRoots:
   - {fileID: 288189770}
   - {fileID: 2081880991}
   - {fileID: 986995060}
+  - {fileID: 1258309162}
+  - {fileID: 400520066}
