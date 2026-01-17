@@ -11,8 +11,8 @@ public class PlayerController : MonoBehaviour
     public float speed = 5.0f;
 
     // Whale boost
-    public float whaleBoostAmount = 3f;
-    public float whaleBoostDuration = 1.5f;
+    public float whaleBoostAmount = 5f;
+    public float whaleBoostDuration = 2f;
     private Coroutine whaleBoostCo;
 
 

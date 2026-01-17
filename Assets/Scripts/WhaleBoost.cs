@@ -4,10 +4,13 @@ public class WhaleBoost : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Player")) return;
+        Debug.Log("Hit: " + other.name + " tag:" + other.tag);
 
-        var pc = other.GetComponent<PlayerController>();
-        if (pc != null) pc.ApplyWhaleBoost();
+        var pc = other.GetComponentInParent<PlayerController>();
+        if (pc != null)
+        {
+            Debug.Log("BOOST APPLIED");
+            pc.ApplyWhaleBoost(); // ← parantez ÇOK ÖNEMLİ
+        }
     }
 }
-
