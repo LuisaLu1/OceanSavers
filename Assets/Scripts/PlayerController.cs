@@ -3,10 +3,18 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using extOSC;
+using System.Collections;
+
 
 public class PlayerController : MonoBehaviour
 {
     public float speed = 5.0f;
+
+    // Whale boost
+    public float whaleBoostAmount = 3f;
+    public float whaleBoostDuration = 1.5f;
+    private Coroutine whaleBoostCo;
+
 
     public AudioSource backgroundMusic;
     public AudioClip collectSound;
@@ -108,6 +116,19 @@ private void FixedUpdate()
         movementX = movementVector.x;
         movementY = movementVector.y;
     }
+    public void ApplyWhaleBoost()
+{
+    if (whaleBoostCo != null) StopCoroutine(whaleBoostCo);
+    whaleBoostCo = StartCoroutine(WhaleBoostRoutine());
+}
+
+private IEnumerator WhaleBoostRoutine()
+{
+    speed += whaleBoostAmount;
+    yield return new WaitForSeconds(whaleBoostDuration);
+    speed -= whaleBoostAmount;
+}
+
 
     private void OnTriggerEnter(Collider other)
     {
