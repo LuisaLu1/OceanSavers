@@ -45,12 +45,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Ambient: 0.5
-    - _Bevel: 0.5
+    - _Ambient: 0.495
+    - _Bevel: 0.786
     - _BevelClamp: 0
-    - _BevelOffset: 0
-    - _BevelRoundness: 0
-    - _BevelWidth: 0
+    - _BevelOffset: -0.171
+    - _BevelRoundness: 0.457
+    - _BevelWidth: 0.036
     - _BumpFace: 0
     - _BumpOutline: 0
     - _ColorMask: 15
@@ -64,7 +64,7 @@ Material:
     - _GlowOuter: 0.05
     - _GlowPower: 0.75
     - _GradientScale: 6
-    - _LightAngle: 3.1416
+    - _LightAngle: 4.25
     - _MaskSoftnessX: 0
     - _MaskSoftnessY: 0
     - _OutlineSoftness: 0
@@ -72,7 +72,7 @@ Material:
     - _OutlineUVSpeedY: 0
     - _OutlineWidth: 0
     - _PerspectiveFilter: 0.875
-    - _Reflectivity: 10
+    - _Reflectivity: 9.48
     - _ScaleRatioA: 0.8333333
     - _ScaleRatioB: 0.6770833
     - _ScaleRatioC: 0.6770833
@@ -80,7 +80,7 @@ Material:
     - _ScaleY: 1
     - _ShaderFlags: 0
     - _Sharpness: 0
-    - _SpecularPower: 2
+    - _SpecularPower: 2.25
     - _Stencil: 0
     - _StencilComp: 8
     - _StencilOp: 0
@@ -89,8 +89,8 @@ Material:
     - _TextureHeight: 512
     - _TextureWidth: 512
     - _UnderlayDilate: 0
-    - _UnderlayOffsetX: 0
-    - _UnderlayOffsetY: 0
+    - _UnderlayOffsetX: 0.73
+    - _UnderlayOffsetY: -0.77
     - _UnderlaySoftness: 0
     - _VertexOffsetX: 0
     - _VertexOffsetY: 0
@@ -102,7 +102,7 @@ Material:
     - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
     - _GlowColor: {r: 0, g: 1, b: 0, a: 0.5}
     - _MaskCoord: {r: 0, g: 0, b: 32767, a: 32767}
-    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
+    - _OutlineColor: {r: 0.29411745, g: 0.24705864, b: 0.2588234, a: 1}
     - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
