@@ -46,14 +46,14 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         baseSpeed = speed;
-        
+
         playerRigidbody = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
 
         // Initialize OSC
-        OSCReceiver receiver = gameObject.AddComponent<OSCReceiver>();
-        receiver.LocalPort = oscPortNumber;
-        receiver.Bind("/" + oscDeviceUUID + "/touch0", OnMoveOSC);
+        //OSCReceiver receiver = gameObject.AddComponent<OSCReceiver>();
+        //receiver.LocalPort = oscPortNumber;
+        //receiver.Bind("/" + oscDeviceUUID + "/touch0", OnMoveOSC);
 
         count = 0;
         highscore = 0;
@@ -67,56 +67,56 @@ public class PlayerController : MonoBehaviour
     }
 
     // FixedUpdate is called on a regular basis (see physics)
-   
 
 
-private void FixedUpdate()
-{
-    // Automatisches Gas geben (Z-Richtung)
-    // Wert für 'vorwärts'
-    float autoForwardSpeed = 1.0f; 
 
-    // Bewegung berechnen
-    // movementX kommt Steuerung 
-    Vector3 targetVelocity = new Vector3(movementX * speed, playerRigidbody.linearVelocity.y, autoForwardSpeed * speed);
+    private void FixedUpdate()
+    {
+        // Automatisches Gas geben (Z-Richtung)
+        // Wert für 'vorwärts'
+        float autoForwardSpeed = 1.0f;
 
-    
-    // Prüft, ob der Rigidbody existiert und NICHT auf Kinematic steht
-if (playerRigidbody != null && !playerRigidbody.isKinematic)
-{
-    // macht die Lenkung direkt
-    playerRigidbody.linearVelocity = targetVelocity;
-}
-else 
-{
-    // Optional: Falls er Kinematic ist, bewegen wir ihn über die Position, 
-    // damit er nicht stecken bleibt
-    playerRigidbody.MovePosition(playerRigidbody.position + targetVelocity * Time.fixedDeltaTime);
-}
-
-// Keyboard
-var keyboard = Keyboard.current;
-if (keyboard != null && keyboard.escapeKey.wasPressedThisFrame)
-{
-    BackToMenu();
-}
+        // Bewegung berechnen
+        // movementX kommt Steuerung 
+        Vector3 targetVelocity = new Vector3(movementX * speed, playerRigidbody.linearVelocity.y, autoForwardSpeed * speed);
 
 
-       /* Vector3 movement = new Vector3(movementX, 0, movementY);
-
-        playerRigidbody.AddForce(movement * speed);
-
-        var keyboard = Keyboard.current;
-        if (keyboard == null)
+        // Prüft, ob der Rigidbody existiert und NICHT auf Kinematic steht
+        if (playerRigidbody != null && !playerRigidbody.isKinematic)
         {
-            return;
+            // macht die Lenkung direkt
+            playerRigidbody.linearVelocity = targetVelocity;
+        }
+        else
+        {
+            // Optional: Falls er Kinematic ist, bewegen wir ihn über die Position, 
+            // damit er nicht stecken bleibt
+            playerRigidbody.MovePosition(playerRigidbody.position + targetVelocity * Time.fixedDeltaTime);
         }
 
-        if (keyboard.escapeKey.wasPressedThisFrame)
+        // Keyboard
+        var keyboard = Keyboard.current;
+        if (keyboard != null && keyboard.escapeKey.wasPressedThisFrame)
         {
             BackToMenu();
         }
-        */
+
+
+        /* Vector3 movement = new Vector3(movementX, 0, movementY);
+
+         playerRigidbody.AddForce(movement * speed);
+
+         var keyboard = Keyboard.current;
+         if (keyboard == null)
+         {
+             return;
+         }
+
+         if (keyboard.escapeKey.wasPressedThisFrame)
+         {
+             BackToMenu();
+         }
+         */
     }
 
     // OnMove is called from ExtOSC
@@ -138,69 +138,74 @@ if (keyboard != null && keyboard.escapeKey.wasPressedThisFrame)
         movementY = movementVector.y;
     }
     public void ApplyWhaleBoost()
-{
-    if (whaleBoostCo != null) StopCoroutine(whaleBoostCo);
-    whaleBoostCo = StartCoroutine(WhaleBoostRoutine());
-}
-
-private IEnumerator WhaleBoostRoutine()
-{
-    speed = baseSpeed * 2f;          // Multiplikativer Boost
-    yield return new WaitForSeconds(whaleBoostDuration);
-    speed = baseSpeed;               // zurücksetzen
-}
-
-
-    private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Diamond"))
+        if (whaleBoostCo != null)
         {
-            audioSource.PlayOneShot(collectSound);
-
-            other.gameObject.SetActive(false);
-
-            count++;
-
-            countText.text = "Collected trash: " + count;
-
-            if (highscore < count)
-            {
-        highscore = count;
-        PlayerPrefs.SetInt("highscore", highscore);
-        PlayerPrefs.Save();
-
-        HighscoreText.text = "HIGHSCORE: " + highscore;
-            }
-
-            //if (count >= maxCount)
-            //{
-                //winLooseText.gameObject.SetActive(true);
-                //winLooseText.text = "YEAPPPPEAAAAHHH!!";
-
-                //Invoke(nameof(BackToMenu), 5f);
-            //}
+            StopCoroutine(whaleBoostCo);
+            whaleBoostCo = null;
         }
 
-        if (other.CompareTag("Enemy"))
-        {
-            
-            sliderController.DecreaseProgress();
-
-          if (sliderController.IsEmpty())
-    {
-        // DEIN bestehender Game-Over-Code
-        backgroundMusic.Stop();
-        audioSource.PlayOneShot(deathSound);
-
-        playerRigidbody.isKinematic = true;
-
-        winLooseText.gameObject.SetActive(true);
-        winLooseText.text = "GAME OVER!!";
-
-        Invoke(nameof(BackToMenu), 5f);
-            }
-        }
+        whaleBoostCo = StartCoroutine(WhaleBoostRoutine());
     }
+
+    private IEnumerator WhaleBoostRoutine()
+    {
+        speed = baseSpeed * whaleBoostAmount;          // Multiplikativer Boost
+        yield return new WaitForSeconds(whaleBoostDuration);
+        speed = baseSpeed;               // zurücksetzen
+    }
+
+
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.CompareTag("Diamond"))
+    //    {
+    //        audioSource.PlayOneShot(collectSound);
+
+    //        other.gameObject.SetActive(false);
+
+    //        count++;
+
+    //        countText.text = "Collected trash: " + count;
+
+    //        if (highscore < count)
+    //        {
+    //    highscore = count;
+    //    PlayerPrefs.SetInt("highscore", highscore);
+    //    PlayerPrefs.Save();
+
+    //    HighscoreText.text = "HIGHSCORE: " + highscore;
+    //        }
+
+    //        //if (count >= maxCount)
+    //        //{
+    //            //winLooseText.gameObject.SetActive(true);
+    //            //winLooseText.text = "YEAPPPPEAAAAHHH!!";
+
+    //            //Invoke(nameof(BackToMenu), 5f);
+    //        //}
+    //    }
+
+    //    if (other.CompareTag("Enemy"))
+    //    {
+
+    //        sliderController.DecreaseProgress();
+
+    //      if (sliderController.IsEmpty())
+    //{
+    //    // DEIN bestehender Game-Over-Code
+    //    backgroundMusic.Stop();
+    //    audioSource.PlayOneShot(deathSound);
+
+    //    playerRigidbody.isKinematic = true;
+
+    //    winLooseText.gameObject.SetActive(true);
+    //    winLooseText.text = "GAME OVER!!";
+
+    //    Invoke(nameof(BackToMenu), 5f);
+    //        }
+    //    }
+    //}
 
     private void BackToMenu()
     {
