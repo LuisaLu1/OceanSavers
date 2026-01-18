@@ -70,15 +70,25 @@ private void FixedUpdate()
     Vector3 targetVelocity = new Vector3(movementX * speed, playerRigidbody.linearVelocity.y, autoForwardSpeed * speed);
 
     
+    // Prüft, ob der Rigidbody existiert und NICHT auf Kinematic steht
+if (playerRigidbody != null && !playerRigidbody.isKinematic)
+{
     // macht die Lenkung direkt
     playerRigidbody.linearVelocity = targetVelocity;
+}
+else 
+{
+    // Optional: Falls er Kinematic ist, bewegen wir ihn über die Position, 
+    // damit er nicht stecken bleibt
+    playerRigidbody.MovePosition(playerRigidbody.position + targetVelocity * Time.fixedDeltaTime);
+}
 
-    // Keyboard
-    var keyboard = Keyboard.current;
-    if (keyboard != null && keyboard.escapeKey.wasPressedThisFrame)
-    {
-        BackToMenu();
-    }
+// Keyboard
+var keyboard = Keyboard.current;
+if (keyboard != null && keyboard.escapeKey.wasPressedThisFrame)
+{
+    BackToMenu();
+}
 
 
        /* Vector3 movement = new Vector3(movementX, 0, movementY);

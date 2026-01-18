@@ -1474,7 +1474,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &857465619
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2785,6 +2785,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8164078558771037576, guid: 20927341bdab24ac486e169c3bde4a9f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2817,8 +2821,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 720.5938, y: 320.38724, z: 1073.8059}
+  m_Center: {x: -900.0003, y: 52.834698, z: 246.78366}
 --- !u!1 &1134372685
 GameObject:
   m_ObjectHideFlags: 0
@@ -3268,7 +3272,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1258309159}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6291d1cd9c2bea94482c4d7a30f5ae2e, type: 3}
   m_Name: 
@@ -3893,7 +3897,7 @@ Transform:
   m_GameObject: {fileID: 1453240811}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 85.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4531,11 +4535,10 @@ GameObject:
   - component: {fileID: 2081880994}
   - component: {fileID: 2081880993}
   - component: {fileID: 2081880992}
-  - component: {fileID: 2081880997}
   - component: {fileID: 2081880998}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4730,8 +4733,8 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 116
-  m_CollisionDetection: 0
+  m_Constraints: 112
+  m_CollisionDetection: 2
 --- !u!23 &2081880996
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4780,27 +4783,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2081880997
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2081880990}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: -90, y: 0, z: 0}
 --- !u!114 &2081880998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4977,7 +4959,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7687229793091385017, guid: 1f1c1ce011e8da44ca58ac244b512c7c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 140.17
+      value: 50.2
       objectReference: {fileID: 0}
     - target: {fileID: 7687229793091385017, guid: 1f1c1ce011e8da44ca58ac244b512c7c, type: 3}
       propertyPath: m_LocalRotation.w
