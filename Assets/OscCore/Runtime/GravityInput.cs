@@ -36,10 +36,10 @@ public class GravityInput : MonoBehaviour
     // Runs on OSC background thread
     void ReadValues(OscMessageValues values)
     {
-	Debug.Log("Gravity OSC: " + gravityBuffer);
-        gravityBuffer.x = values.ReadFloatElement(0);
-        gravityBuffer.y = values.ReadFloatElement(1);
-        gravityBuffer.z = values.ReadFloatElement(2);
+	    Debug.Log("Gravity OSC: " + gravityBuffer);
+        gravityBuffer.x = values.ReadFloatElement(1);
+        gravityBuffer.y = values.ReadFloatElement(2);
+        gravityBuffer.z = values.ReadFloatElement(0);
     }
 
     // Runs on Unity main thread
