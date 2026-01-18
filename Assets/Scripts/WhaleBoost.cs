@@ -6,12 +6,17 @@ public class WhaleBoost : MonoBehaviour
     {
         Debug.Log("Hit: " + other.name + " tag:" + other.tag);
 
-        var pc = other.GetComponent<PlayerController>();
+        // child collider -> parent'taki PlayerController'ı bul
+        var pc = other.GetComponentInParent<PlayerController>();
 
         if (pc != null)
         {
             Debug.Log("BOOST APPLIED");
-            pc.ApplyWhaleBoost(); // ← parantez ÇOK ÖNEMLİ
+            pc.ApplyWhaleBoost();
+        }
+        else
+        {
+            Debug.LogWarning("PlayerController bulunamadı! (Is Script on parent ?)");
         }
     }
 }
