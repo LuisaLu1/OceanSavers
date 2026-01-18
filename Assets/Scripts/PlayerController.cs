@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
 
     public TextMeshProUGUI countText;
     public TextMeshProUGUI winLooseText;
+    public TextMeshProUGUI HighscoreText;
 
     public int oscPortNumber = 10000;
     public string oscDeviceUUID;
@@ -35,6 +36,10 @@ public class PlayerController : MonoBehaviour
 
     private int count;
     private int maxCount;
+    private int highscore;
+
+    public SliderController sliderController;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -48,9 +53,12 @@ public class PlayerController : MonoBehaviour
         receiver.Bind("/" + oscDeviceUUID + "/touch0", OnMoveOSC);
 
         count = 0;
-        maxCount = GameObject.FindGameObjectsWithTag("Diamond").Length;
+        highscore = 0;
+        //maxCount = GameObject.FindGameObjectsWithTag("Diamond").Length;
 
-        countText.text = "Collected " + count + " of " + maxCount;
+        highscore = PlayerPrefs.GetInt("highscore", 0);
+        countText.text = "Trash collected: " + count;
+        HighscoreText.text = "HIGHSCORE: " + highscore.ToString();
 
         winLooseText.gameObject.SetActive(false);
     }
@@ -150,28 +158,44 @@ private IEnumerator WhaleBoostRoutine()
 
             count++;
 
-            countText.text = "Collected " + count + " of " + maxCount;
+            countText.text = "Collected trash: " + count;
 
-            if (count >= maxCount)
+            if (highscore < count)
             {
-                winLooseText.gameObject.SetActive(true);
-                winLooseText.text = "YEAPPPPEAAAAHHH!!";
+        highscore = count;
+        PlayerPrefs.SetInt("highscore", highscore);
+        PlayerPrefs.Save();
 
-                Invoke(nameof(BackToMenu), 5f);
+        HighscoreText.text = "HIGHSCORE: " + highscore;
             }
+
+            //if (count >= maxCount)
+            //{
+                //winLooseText.gameObject.SetActive(true);
+                //winLooseText.text = "YEAPPPPEAAAAHHH!!";
+
+                //Invoke(nameof(BackToMenu), 5f);
+            //}
         }
 
         if (other.CompareTag("Enemy"))
         {
-            backgroundMusic.Stop();
-            audioSource.PlayOneShot(deathSound);
+            
+            sliderController.DecreaseProgress();
 
-            playerRigidbody.isKinematic = true;
+          if (sliderController.IsEmpty())
+    {
+        // DEIN bestehender Game-Over-Code
+        backgroundMusic.Stop();
+        audioSource.PlayOneShot(deathSound);
 
-            winLooseText.gameObject.SetActive(true);
-            winLooseText.text = "GAME OVER!!";
+        playerRigidbody.isKinematic = true;
 
-            Invoke(nameof(BackToMenu), 5f);
+        winLooseText.gameObject.SetActive(true);
+        winLooseText.text = "GAME OVER!!";
+
+        Invoke(nameof(BackToMenu), 5f);
+            }
         }
     }
 
