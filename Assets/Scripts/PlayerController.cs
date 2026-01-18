@@ -9,6 +9,7 @@ using System.Collections;
 public class PlayerController : MonoBehaviour
 {
     public float speed = 5.0f;
+    private float baseSpeed;
 
     // Whale boost
     public float whaleBoostAmount = 5f;
@@ -44,6 +45,8 @@ public class PlayerController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
+        baseSpeed = speed;
+        
         playerRigidbody = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
 
@@ -142,9 +145,9 @@ if (keyboard != null && keyboard.escapeKey.wasPressedThisFrame)
 
 private IEnumerator WhaleBoostRoutine()
 {
-    speed += whaleBoostAmount;
+    speed = baseSpeed * 2f;          // Multiplikativer Boost
     yield return new WaitForSeconds(whaleBoostDuration);
-    speed -= whaleBoostAmount;
+    speed = baseSpeed;               // zurücksetzen
 }
 
 

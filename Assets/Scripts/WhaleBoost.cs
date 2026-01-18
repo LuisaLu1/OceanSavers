@@ -6,7 +6,8 @@ public class WhaleBoost : MonoBehaviour
     {
         Debug.Log("Hit: " + other.name + " tag:" + other.tag);
 
-        var pc = other.GetComponentInParent<PlayerController>();
+        var pc = other.GetComponent<PlayerController>();
+
         if (pc != null)
         {
             Debug.Log("BOOST APPLIED");
