@@ -9,6 +9,7 @@ using System.Collections;
 public class PlayerController : MonoBehaviour
 {
     public float speed = 5.0f;
+    private float baseSpeed;
 
     // Whale boost
     public float whaleBoostAmount = 5f;
@@ -22,6 +23,7 @@ public class PlayerController : MonoBehaviour
 
     public TextMeshProUGUI countText;
     public TextMeshProUGUI winLooseText;
+    public TextMeshProUGUI HighscoreText;
 
     public int oscPortNumber = 10000;
     public string oscDeviceUUID;
@@ -35,67 +37,86 @@ public class PlayerController : MonoBehaviour
 
     private int count;
     private int maxCount;
+    private int highscore;
+
+    public SliderController sliderController;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
+        baseSpeed = speed;
+
         playerRigidbody = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
 
         // Initialize OSC
-        OSCReceiver receiver = gameObject.AddComponent<OSCReceiver>();
-        receiver.LocalPort = oscPortNumber;
-        receiver.Bind("/" + oscDeviceUUID + "/touch0", OnMoveOSC);
+        //OSCReceiver receiver = gameObject.AddComponent<OSCReceiver>();
+        //receiver.LocalPort = oscPortNumber;
+        //receiver.Bind("/" + oscDeviceUUID + "/touch0", OnMoveOSC);
 
         count = 0;
-        maxCount = GameObject.FindGameObjectsWithTag("Diamond").Length;
+        highscore = 0;
+        //maxCount = GameObject.FindGameObjectsWithTag("Diamond").Length;
 
-        countText.text = "Collected " + count + " of " + maxCount;
+        highscore = PlayerPrefs.GetInt("highscore", 0);
+        countText.text = "Trash collected: " + count;
+        HighscoreText.text = "HIGHSCORE: " + highscore.ToString();
 
         winLooseText.gameObject.SetActive(false);
     }
 
     // FixedUpdate is called on a regular basis (see physics)
-   
 
 
-private void FixedUpdate()
-{
-    // Automatisches Gas geben (Z-Richtung)
-    // Wert für 'vorwärts'
-    float autoForwardSpeed = 1.0f; 
 
-    // Bewegung berechnen
-    // movementX kommt Steuerung 
-    Vector3 targetVelocity = new Vector3(movementX * speed, playerRigidbody.linearVelocity.y, autoForwardSpeed * speed);
-
-    
-    // macht die Lenkung direkt
-    playerRigidbody.linearVelocity = targetVelocity;
-
-    // Keyboard
-    var keyboard = Keyboard.current;
-    if (keyboard != null && keyboard.escapeKey.wasPressedThisFrame)
+    private void FixedUpdate()
     {
-        BackToMenu();
-    }
+        // Automatisches Gas geben (Z-Richtung)
+        // Wert für 'vorwärts'
+        float autoForwardSpeed = 1.0f;
+
+        // Bewegung berechnen
+        // movementX kommt Steuerung 
+        Vector3 targetVelocity = new Vector3(movementX * speed, playerRigidbody.linearVelocity.y, autoForwardSpeed * speed);
 
 
-       /* Vector3 movement = new Vector3(movementX, 0, movementY);
-
-        playerRigidbody.AddForce(movement * speed);
-
-        var keyboard = Keyboard.current;
-        if (keyboard == null)
+        // Prüft, ob der Rigidbody existiert und NICHT auf Kinematic steht
+        if (playerRigidbody != null && !playerRigidbody.isKinematic)
         {
-            return;
+            // macht die Lenkung direkt
+            playerRigidbody.linearVelocity = targetVelocity;
+        }
+        else
+        {
+            // Optional: Falls er Kinematic ist, bewegen wir ihn über die Position, 
+            // damit er nicht stecken bleibt
+            playerRigidbody.MovePosition(playerRigidbody.position + targetVelocity * Time.fixedDeltaTime);
         }
 
-        if (keyboard.escapeKey.wasPressedThisFrame)
+        // Keyboard
+        var keyboard = Keyboard.current;
+        if (keyboard != null && keyboard.escapeKey.wasPressedThisFrame)
         {
             BackToMenu();
         }
-        */
+
+
+        /* Vector3 movement = new Vector3(movementX, 0, movementY);
+
+         playerRigidbody.AddForce(movement * speed);
+
+         var keyboard = Keyboard.current;
+         if (keyboard == null)
+         {
+             return;
+         }
+
+         if (keyboard.escapeKey.wasPressedThisFrame)
+         {
+             BackToMenu();
+         }
+         */
     }
 
     // OnMove is called from ExtOSC
@@ -117,53 +138,74 @@ private void FixedUpdate()
         movementY = movementVector.y;
     }
     public void ApplyWhaleBoost()
-{
-    if (whaleBoostCo != null) StopCoroutine(whaleBoostCo);
-    whaleBoostCo = StartCoroutine(WhaleBoostRoutine());
-}
-
-private IEnumerator WhaleBoostRoutine()
-{
-    speed += whaleBoostAmount;
-    yield return new WaitForSeconds(whaleBoostDuration);
-    speed -= whaleBoostAmount;
-}
-
-
-    private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Diamond"))
+        if (whaleBoostCo != null)
         {
-            audioSource.PlayOneShot(collectSound);
-
-            other.gameObject.SetActive(false);
-
-            count++;
-
-            countText.text = "Collected " + count + " of " + maxCount;
-
-            if (count >= maxCount)
-            {
-                winLooseText.gameObject.SetActive(true);
-                winLooseText.text = "YEAPPPPEAAAAHHH!!";
-
-                Invoke(nameof(BackToMenu), 5f);
-            }
+            StopCoroutine(whaleBoostCo);
+            whaleBoostCo = null;
         }
 
-        if (other.CompareTag("Enemy"))
-        {
-            backgroundMusic.Stop();
-            audioSource.PlayOneShot(deathSound);
-
-            playerRigidbody.isKinematic = true;
-
-            winLooseText.gameObject.SetActive(true);
-            winLooseText.text = "GAME OVER!!";
-
-            Invoke(nameof(BackToMenu), 5f);
-        }
+        whaleBoostCo = StartCoroutine(WhaleBoostRoutine());
     }
+
+    private IEnumerator WhaleBoostRoutine()
+    {
+        speed = baseSpeed * whaleBoostAmount;          // Multiplikativer Boost
+        yield return new WaitForSeconds(whaleBoostDuration);
+        speed = baseSpeed;               // zurücksetzen
+    }
+
+
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.CompareTag("Diamond"))
+    //    {
+    //        audioSource.PlayOneShot(collectSound);
+
+    //        other.gameObject.SetActive(false);
+
+    //        count++;
+
+    //        countText.text = "Collected trash: " + count;
+
+    //        if (highscore < count)
+    //        {
+    //    highscore = count;
+    //    PlayerPrefs.SetInt("highscore", highscore);
+    //    PlayerPrefs.Save();
+
+    //    HighscoreText.text = "HIGHSCORE: " + highscore;
+    //        }
+
+    //        //if (count >= maxCount)
+    //        //{
+    //            //winLooseText.gameObject.SetActive(true);
+    //            //winLooseText.text = "YEAPPPPEAAAAHHH!!";
+
+    //            //Invoke(nameof(BackToMenu), 5f);
+    //        //}
+    //    }
+
+    //    if (other.CompareTag("Enemy"))
+    //    {
+
+    //        sliderController.DecreaseProgress();
+
+    //      if (sliderController.IsEmpty())
+    //{
+    //    // DEIN bestehender Game-Over-Code
+    //    backgroundMusic.Stop();
+    //    audioSource.PlayOneShot(deathSound);
+
+    //    playerRigidbody.isKinematic = true;
+
+    //    winLooseText.gameObject.SetActive(true);
+    //    winLooseText.text = "GAME OVER!!";
+
+    //    Invoke(nameof(BackToMenu), 5f);
+    //        }
+    //    }
+    //}
 
     private void BackToMenu()
     {
