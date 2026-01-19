@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI winLooseText;
     public TextMeshProUGUI HighscoreText;
 
-    public int oscPortNumber = 10000;
+   public int oscPortNumber = 10005;
     public string oscDeviceUUID;
 
     private Rigidbody playerRigidbody;
@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
 
         // Initialize OSC
-        //OSCReceiver receiver = gameObject.AddComponent<OSCReceiver>();
+       // OSCReceiver receiver = gameObject.AddComponent<OSCReceiver>();
         //receiver.LocalPort = oscPortNumber;
         //receiver.Bind("/" + oscDeviceUUID + "/touch0", OnMoveOSC);
 
@@ -156,56 +156,55 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.CompareTag("Diamond"))
-    //    {
-    //        audioSource.PlayOneShot(collectSound);
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Diamond"))
+        {
+            audioSource.PlayOneShot(collectSound);
 
-    //        other.gameObject.SetActive(false);
+            other.gameObject.SetActive(false);
 
-    //        count++;
+            count++;
 
-    //        countText.text = "Collected trash: " + count;
+            countText.text = "Collected trash: " + count;
 
-    //        if (highscore < count)
-    //        {
-    //    highscore = count;
-    //    PlayerPrefs.SetInt("highscore", highscore);
-    //    PlayerPrefs.Save();
+            if (highscore < count)
+            {
+        highscore = count;
+        PlayerPrefs.SetInt("highscore", highscore);
+        PlayerPrefs.Save();
 
-    //    HighscoreText.text = "HIGHSCORE: " + highscore;
-    //        }
+        HighscoreText.text = "HIGHSCORE: " + highscore;
+            }
 
-    //        //if (count >= maxCount)
-    //        //{
-    //            //winLooseText.gameObject.SetActive(true);
-    //            //winLooseText.text = "YEAPPPPEAAAAHHH!!";
+          /*  if (count >= maxCount)
+            {
+                winLooseText.gameObject.SetActive(true);
+                winLooseText.text = "YEAPPPPEAAAAHHH!!";
 
-    //            //Invoke(nameof(BackToMenu), 5f);
-    //        //}
-    //    }
+                Invoke(nameof(BackToMenu), 5f);
+            }*/
+        }
 
-    //    if (other.CompareTag("Enemy"))
-    //    {
+        if (other.CompareTag("Enemy"))
+        {
 
-    //        sliderController.DecreaseProgress();
+            sliderController.DecreaseProgress();
 
-    //      if (sliderController.IsEmpty())
-    //{
-    //    // DEIN bestehender Game-Over-Code
-    //    backgroundMusic.Stop();
-    //    audioSource.PlayOneShot(deathSound);
+          if (sliderController.IsEmpty())
+    {
+        // DEIN bestehender Game-Over-Code
+        backgroundMusic.Stop();
+        audioSource.PlayOneShot(deathSound);
 
-    //    playerRigidbody.isKinematic = true;
+        playerRigidbody.isKinematic = true;
 
-    //    winLooseText.gameObject.SetActive(true);
-    //    winLooseText.text = "GAME OVER!!";
-
-    //    Invoke(nameof(BackToMenu), 5f);
-    //        }
-    //    }
-    //}
+        winLooseText.gameObject.SetActive(true);
+        winLooseText.text = "GAME OVER!!";
+        Invoke(nameof(BackToMenu), 5f);
+            }
+        }
+    }
 
     private void BackToMenu()
     {
