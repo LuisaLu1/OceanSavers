@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class SliderController : MonoBehaviour
 {
-    public int maxProgress = 5;
+    public int maxProgress = 3;
     public int minProgress = 1;
 
     public Slider slider;
