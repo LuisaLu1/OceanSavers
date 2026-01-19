@@ -9,7 +9,7 @@ public class GravityInput : MonoBehaviour
     public OscReceiver receiver;
 
     [Header("OSC Settings")]
-    public string address = "/zigsim/gravity";
+    public string address = "/alex/gravity";
 
     [Header("Gravity Data")]
     public Vector3 gravity;
