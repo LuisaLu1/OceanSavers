@@ -21219,8 +21219,8 @@ MonoBehaviour:
   whaleBoostAmount: 5
   whaleBoostDuration: 5
   backgroundMusic: {fileID: 1134372686}
-  collectSound: {fileID: 8300000, guid: fa7f046ce321d4021b5e753bf1152916, type: 3}
-  deathSound: {fileID: 8300000, guid: 5c35e51d5bd03b249bc212141aafaf29, type: 3}
+  collectSound: {fileID: 8300000, guid: 6ff1d55a2ad614f61b91a78329a386c8, type: 3}
+  deathSound: {fileID: 8300000, guid: 08f9d58bdb4214e10b3f480ff5bb3764, type: 3}
   countText: {fileID: 1163109539}
   winLooseText: {fileID: 56084432}
   HighscoreText: {fileID: 1085861166}

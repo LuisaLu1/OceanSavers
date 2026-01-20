@@ -1,2 +1,18 @@
 fileFormatVersion: 2
 guid: 8078088021cfbde4a885dea868514ef4
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - backgroundMusic: {instanceID: 0}
+  - collectSound: {instanceID: 0}
+  - deathSound: {fileID: 8300000, guid: 08f9d58bdb4214e10b3f480ff5bb3764, type: 3}
+  - countText: {instanceID: 0}
+  - winLooseText: {instanceID: 0}
+  - HighscoreText: {instanceID: 0}
+  - sliderController: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
