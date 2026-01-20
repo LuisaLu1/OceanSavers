@@ -22,6 +22,8 @@ public class ChasingEnemyController : MonoBehaviour
 
     private void Start()
     {
+        enemy = GameObject.FindGameObjectWithTag("Enemy");
+
         nav = gameObject.GetComponent<NavMeshAgent>();
         initialPosition = gameObject.transform.position;
     }
@@ -31,7 +33,7 @@ public class ChasingEnemyController : MonoBehaviour
         // Distance from player to enemy is smaller than the given detection radius -> start chasing the player 
         if (Vector3.Distance(player.transform.position, gameObject.transform.position) < detectionRadius)
         {
-            enemy.GetComponent<Renderer>().material = chasingMaterial;
+            GetComponentInChildren<Renderer>().material = chasingMaterial;
 
             nav.SetDestination(player.transform.position);
 
@@ -39,7 +41,7 @@ public class ChasingEnemyController : MonoBehaviour
         }
 
         // Enemy is in idle mode
-        enemy.GetComponent<Renderer>().material = idleMaterial;
+        GetComponentInChildren<Renderer>().material = idleMaterial;
 
         if (nav.remainingDistance <= float.Epsilon)
         {
