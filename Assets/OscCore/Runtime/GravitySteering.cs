@@ -21,29 +21,28 @@ public class GravitySteering : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        // Must be kinematic to move manually via MovePosition
+        // Using isKinematic prevents the linear velocity error on kinematic bodies
         rb.isKinematic = true; 
     }
 
     void FixedUpdate()
     {
-        // 1. Calculate the New Position
-        // Forward is Z, Side-to-Side is X
+        // 1. Automatic Forward Movement (Z axis)
         float nextZ = transform.position.z + (forwardSpeed * Time.fixedDeltaTime);
         
-        // Use Zig Sim Y-tilt for X steering
-        float horizontalInput = -gravityValue.y; 
+        // 2. Steering (X axis) using phone Z-tilt 
+        // We use .z here because you mentioned X is not receiving data
+        float horizontalInput = -gravityValue.z; 
         float nextX = transform.position.x + (horizontalInput * steeringSpeed * Time.fixedDeltaTime);
 
-        // 2. Clamp the X so you stay in the water
+        // 3. Keep within the river/track bounds
         nextX = Mathf.Clamp(nextX, -horizontalLimit, horizontalLimit);
 
-        // 3. Apply the movement to the Rigidbody
-        // We keep the current Y position so it doesn't sink
+        // 4. Move the Kinematic Rigidbody smoothly
         Vector3 newPosition = new Vector3(nextX, transform.position.y, nextZ);
         rb.MovePosition(newPosition);
 
-        // 4. Visual Tilt (Leaning the child model)
+        // 5. Visual Tilt
         if (visualModel != null)
         {
             float leanTarget = horizontalInput * maxLeanAngle;
@@ -52,7 +51,7 @@ public class GravitySteering : MonoBehaviour
         }
     }
 
-    // This receives the data from the OscCore Vector3 Input component
+    // This receives the Vector3 from the OscCore Vector3 Input component
     public void GetGravity(Vector3 gravity)
     {
         gravityValue = gravity;
