@@ -1,45 +1,60 @@
 
 
-
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class GravitySteering : MonoBehaviour
 {
-    [Header("Steering Settings")]
-    public float turnStrength = 5f;
-    public float smoothing = 5f;
+    [UnityEngine.Header("Movement Settings")]
+    public float forwardSpeed = 8f;      
+    public float steeringSpeed = 15f;    
+    public float horizontalLimit = 12f;  
+
+    [UnityEngine.Header("Visual Lean")]
+    public Transform visualModel; 
+    public float maxLeanAngle = 25f;
+    public float leanSmoothing = 10f;
 
     private Rigidbody rb;
-    private float smoothX;
-
     private Vector3 gravityValue;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        // Must be kinematic to move manually via MovePosition
+        rb.isKinematic = true; 
     }
 
     void FixedUpdate()
     {
-        // Smooth gravity X (phone tilt left/right)
-        smoothX = Mathf.Lerp(
-            smoothX,
-            //gravityInput.gravity.x,
-            gravityValue.y,
-            Time.fixedDeltaTime * smoothing
-        );
+        // 1. Calculate the New Position
+        // Forward is Z, Side-to-Side is X
+        float nextZ = transform.position.z + (forwardSpeed * Time.fixedDeltaTime);
+        
+        // Use Zig Sim Y-tilt for X steering
+        float horizontalInput = -gravityValue.y; 
+        float nextX = transform.position.x + (horizontalInput * steeringSpeed * Time.fixedDeltaTime);
 
-        //Debug.Log("smoothX: " + smoothX);
+        // 2. Clamp the X so you stay in the water
+        nextX = Mathf.Clamp(nextX, -horizontalLimit, horizontalLimit);
 
-        // Apply steering torque (Y axis rotation)
-        rb.AddTorque(Vector3.up * smoothX * turnStrength, ForceMode.Force);
+        // 3. Apply the movement to the Rigidbody
+        // We keep the current Y position so it doesn't sink
+        Vector3 newPosition = new Vector3(nextX, transform.position.y, nextZ);
+        rb.MovePosition(newPosition);
+
+        // 4. Visual Tilt (Leaning the child model)
+        if (visualModel != null)
+        {
+            float leanTarget = horizontalInput * maxLeanAngle;
+            Quaternion targetRotation = Quaternion.Euler(0, 0, leanTarget);
+            visualModel.localRotation = Quaternion.Lerp(visualModel.localRotation, targetRotation, Time.fixedDeltaTime * leanSmoothing);
+        }
     }
 
+    // This receives the data from the OscCore Vector3 Input component
     public void GetGravity(Vector3 gravity)
     {
-        //Debug.Log("Gravity OSC: " + gravity);
-
         gravityValue = gravity;
     }
 }
